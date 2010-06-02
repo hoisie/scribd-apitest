@@ -1,0 +1,86 @@
+# all methods (some are not described yet):
+#  - docs.upload
+#  - docs.uploadFromUrl
+#  - docs.getList
+#  - docs.getConversionStatus
+#  - docs.getSettings
+#  - docs.changeSettings
+#  - docs.getDownloadUrl
+#  - docs.getStats
+#  - docs.delete
+#  - docs.search
+#  - docs.getCategories
+#  - docs.featured
+#  - docs.browse
+#  - docs.purchased
+#  - docs.favorites
+#  - docs.uploadThumb
+#  - docs.lookupISBN
+#  - docs.getCollections
+#  - docs.addToCollection
+#  - docs.removeFromCollection
+#  - user.login
+#  - user.signup
+#  - user.getAutoSigninUrl
+#  - ext.lookup
+#  - ext.set
+#  - security.setAccess
+#  - security.getDocumentAccessList
+#  - security.getUserAccessList
+#  - store.purchase
+#  - store.purchaseList
+#  - print.getPrintInfo
+#  
+# method descriptions
+# by default, these are HTTP GET requests
+
+docs.upload:
+  method : post
+  enctype : multipart/form-data
+  required:
+    - {name: api_key, type: text }
+    - {name: file, type: file }
+  optional:
+    - {name: doc_type, type: select, options: ["", pdf, doc, txt, ppt] }
+    - {name: access, type: select, options: [public, private]}
+    - {name: rev_id, type: text }
+    - {name: paid_content, type: select, options: [0, 1]}
+    - {name: secure, type: select, options: [0, 1]}
+    - {name: download_and_drm, type: select, options: [download-pdf, download-drm, download-pdf-orig, view-only]}
+    - {name: my_user_id, type: text}
+
+docs.uploadFromUrl:
+  required:
+    - {name: api_key, type: text }
+    - {name: url, type: text }
+  optional:
+    - {name: doc_type, type: select, options: ["", pdf, doc, txt, ppt] }
+    - {name: access, type: select, options: [public, private]}
+    - {name: rev_id, type: text }
+    - {name: paid_content, type: select, options: [0, 1]}
+    - {name: secure, type: select, options: [0, 1]}
+    - {name: download_and_drm, type: select, options: [download-pdf, download-drm, download-pdf-orig, view-only]}
+    - {name: my_user_id, type: text}
+
+docs.getList:
+  method : get
+  required:
+    - {name: api_key, type: text }
+  optional:
+    - {name: my_user_id, type: text}
+    
+docs.delete:
+  method : get
+  required:
+    - {name: api_key, type: text }
+    - {name: doc_id, type: text }
+  optional:
+    - {name: my_user_id, type: text}
+    
+user.login:
+  method : get
+  required:
+    - {name: api_key, type: text }
+    - {name: username, type: text }
+    - {name: password, type: password }
+  optional: []

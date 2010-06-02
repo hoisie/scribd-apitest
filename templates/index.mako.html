@@ -1,0 +1,34 @@
+<html>
+<head>
+<title> Scribd API Sandbox </title>
+<script src='http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js' language='javascript'></script>
+<script language='javascript'>
+
+function onSelect() {
+	$.get("/method", { name: $('#method').val() },
+			function(data){
+				$('#methodform').html( data )
+			});
+	   
+	console.log()
+}
+
+</script>
+</head>
+
+<body>
+Method: 
+<select id="method" onchange="onSelect()">
+<option value=""></option>
+% for m in methods:
+<option value="${m}">${m}</option>
+% endfor
+</select>
+
+<div id="methodform">
+
+</div>
+
+</body>
+
+</html>

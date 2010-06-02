@@ -1,0 +1,38 @@
+<form 	action="/execute" 
+		method="${method['method']}" 
+		% if method['method'] == "post":
+		enctype="${method['enctype']}"
+		% endif
+		>
+<input type="hidden" name="name" value="${name}"/>
+<%def name="writeparam(param)">
+<%
+name = param['name']
+typ = param['type']
+%>
+% if name == 'api_key':
+	${name}: <input type="${typ}" name="${name}" value="${api_key}"> </input>
+% elif typ == 'select':
+	${name}: <select name="${name}">
+	% for o in param['options']:
+	<option value="${o}"> ${o} </option>
+	% endfor
+	</select>
+% else:
+	${name}: <input type="${typ}" name="${name}"> </input>
+% endif
+</%def>
+
+Required Params: <br/>
+% for param in method['required']:
+	${writeparam(param)}
+	<br/>
+% endfor
+
+Optional Params:<br/>
+% for param in method['optional']:
+	${writeparam(param)}
+	<br/>
+% endfor
+<input type="submit" name="Submit" value="Submit"/>
+</form>
