@@ -50,6 +50,7 @@ docs.upload:
     - {name: my_user_id, type: text}
 
 docs.uploadFromUrl:
+  method : get
   required:
     - {name: api_key, type: text }
     - {name: url, type: text }

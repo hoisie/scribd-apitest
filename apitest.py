@@ -36,18 +36,19 @@ def execute(input):
     if input['api_key']:
         web.setcookie(API_KEY_COOKIE_NAME, input['api_key'], 3600*24*365)
     name = input['name']
-    if name not in descriptions:
+    if name not in web.config.apimethods:
         return "Could not find method" + name
     params['method']=name
-    method = descriptions[name]
+    method = web.config.apimethods[name]
+    print method
     for param in method['required']:
-        name = param[0]
+        name = param['name']
         if name not in input:
-            return 'Missing param '+name
+            return "Missing param: '%s'"%name
         params[name] = input[name]
     if 'optional' in method:
         for param in method['optional']:
-            name = param[0]
+            name = param['name']
             if name in input and input[name]!="":
                 params[name] = input[name]
     if method['method'] == 'get':
@@ -71,7 +72,6 @@ class Execute:
 
 class Index:
     def GET(self):
-        print web.config.apimethods
         template = Template(filename=os.path.join(template_dir, 'index.mako.html'))
         return render(template, methods=web.config.apimethods)
 
@@ -82,10 +82,14 @@ class GetMethod:
         #Check if we have a cookie storing the api_key
         api_key = web.cookies().get(API_KEY_COOKIE_NAME) or ""
         template = Template(filename=os.path.join(template_dir, 'method.mako.html'))
-        if name in web.config.apimethods:
-            return render(template, name=name, api_key=api_key, method=web.config.apimethods[name])
-        else:
-            return "Method data not available"
+        if name not in web.config.apimethods:
+            return "Method '%s' not available"%name
+        method=web.config.apimethods[name]
+        print method
+        #default to a HTTP GET request
+        if 'method' not in method:
+            method['method'] = 'get'
+        return render(template, name=name, api_key=api_key, method=method)
 
 if __name__ == "__main__":
     sys.argv[1:] = ['6080']+sys.argv[1:]
